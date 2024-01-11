@@ -1,0 +1,95 @@
+:root {
+    --qr-width: 125px;
+    --qr-border: 5px;
+    --internet-on: #008000;
+    --internet-off: #ff0000;
+}
+
+.SI-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    text-align: left;
+}
+
+.SI-container .align-center{
+    text-align: center;
+}
+
+.SI-qrimage {
+    background: #000;
+    border: var(--qr-border) solid #fff;
+    width: var(--qr-width);
+    height: var(--qr-width);
+}
+
+.SI-wifi {
+    overflow-wrap: break-word;
+    word-break: break-all;
+    width: calc(var(--qr-width) + (var(--qr-border) * 2));
+    flex-basis: calc(var(--qr-width) + (var(--qr-border) * 2));
+}
+
+.SI-wifi b:after {
+    content: ": ";
+}
+
+.SI-wifi p {
+    margin: 5px 0 0 0;
+    font-size: 13px;
+}
+
+.SI-wifi .compact {
+    display: flex;
+    justify-content: space-between;
+}
+
+.SI-wifi .compact p {
+    font-size: 14px;
+}
+
+.SI-wifi .compact b { 
+    display: none;
+}
+
+.SI-wifi .compact .network:after {
+    content: ":";
+}
+
+.SI-system-info .fa {
+    display: inline-block;
+    width: 1em;
+    text-align: center;
+    margin-right: 5px;
+    color: var(--color-text-bright);
+}
+
+.SI-system-info .key{
+    padding-right: 2px;
+}
+
+.SI-system-info .value{
+    padding-left: 2px;
+    text-align: right;
+}
+
+.SI-system-info .internet .value {
+    text-align: center;
+    display: block;
+}
+
+.SI-system-info .internet .online {
+    color: var(--internet-on);
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: var(--internet-on);
+    -webkit-text-fill-color: var(--internet-on);    
+}
+
+.SI-system-info .internet .offline {
+    color: var(--internet-off);
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: var(--internet-off);
+    -webkit-text-fill-color: var(--internet-off);        
+}
+
