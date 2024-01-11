@@ -1,0 +1,10 @@
+{
+    "CPU_USAGE_PERCENT": "Cpu",
+    "RAM_USAGE_PERCENT": "Memoria",
+    "DISK_USAGE_PERCENT": "Disco",
+    "TEMPERATURE": "Temperatura",
+    "INTERNET": "Internet",
+    "NETWORK": "Red",
+    "PASSWORD": "Clave",
+    "AUTHENTICATION": "Autenticacion"
+  }
