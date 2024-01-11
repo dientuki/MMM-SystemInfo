@@ -14,7 +14,8 @@ Note that if you have special characters in your password, the QR code will not 
 - Internet status is "bassed" on [this module](https://github.com/sheyabernstein/MMM-connection-status)
 
 ## Screenshot
-![MMM-WifiPassword Screenshot](https://raw.githubusercontent.com/)
+![MMM-SystemInfo Screenshot Compact](https://raw.githubusercontent.com/dientuki/MMM-SystemInfo/master/screenshots/screenshot-compact.png)
+Full example
 
 ## Installation
 1. In your terminal, change to your Magic Mirror module directory
