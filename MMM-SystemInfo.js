@@ -15,17 +15,17 @@ Module.register("MMM-SystemInfo", {
         /* stats */
         units: config.units,
         updateInterval: 2000,
-        showCpuUsage: true,
-        cpuUsageCommand: "awk '/^%Cpu/{gsub(/,/, \".\", $8); print 100 - $8}' <(top -b -n 1)",
-        showRamUsage: true,
+        showCpuUsage: false,
+        cpuUsageCommand: "top -b -n 1 | awk '/^%Cpu/{gsub(/,/, \".\", $8); print 100 - $8}'",
+        showRamUsage: false,
         ramUsageCommand: 'free | awk \'/Mem:/ { printf("%.1f\\n", (($3 + $5) / $2) * 100) }\'',
-        showDiskUsage: true,
-        diskUsageCommand: "df -P /dev/sda3 | awk 'NR==2 {print $5}'",
-        showCpuTemperature: true,
+        showDiskUsage: false,
+        diskUsageCommand: "",
+        showCpuTemperature: false,
         cpuTemperatureCommand: "echo \"$(( ($(cat /sys/class/thermal/thermal_zone1/temp) + $(cat /sys/class/thermal/thermal_zone2/temp)) / 2 ))\"",
         showInternet: true,
-	    connectedColor: "#008000",
-	    disconnectedColor: "#ff0000",
+        connectedColor: "#008000",
+        disconnectedColor: "#ff0000",
     },
 
     getTranslations() {
@@ -140,6 +140,7 @@ Module.register("MMM-SystemInfo", {
         
         icon.classList.add('fa-hard-drive');
         key.innerHTML = this.translate("DISK_USAGE_PERCENT");
+        console.log(this.stats);
         value.innerHTML = parseFloat(this.stats.diskUsage).toFixed(1) + '%';
 
         td1.appendChild(icon);

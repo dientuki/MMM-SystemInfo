@@ -32,17 +32,19 @@ module.exports = NodeHelper.create({
     },
 
     getCpuUsage: function() {
-        return parseFloat(this.exec(this.config.cpuUsageCommand));
+        return this.config.showCpuUsage ? parseFloat(this.exec(this.config.cpuUsageCommand)) : '';
     },
     getRamUsage: function() {
-        return parseFloat(this.exec(this.config.ramUsageCommand));
+        return this.config.showRamUsage ? parseFloat(this.exec(this.config.ramUsageCommand)) : '';
     },    
     getAvailableSpacePercentage: function() {
-        return this.exec(this.config.diskUsageCommand);
+        return this.config.showDiskUsage ? this.exec(this.config.diskUsageCommand) : '';
     },    
     getCpuTemperature: function() {
-        const t = this.exec(this.config.cpuTemperatureCommand);
-        return this.convertTemperature(t);
+        if (this.config.showCpuTemperature) {
+            const t = this.exec(this.config.cpuTemperatureCommand);
+            return this.convertTemperature(t);
+        }
     },      
 
     exec: function(cmd){
