@@ -15,6 +15,7 @@ Module.register("MMM-SystemInfo", {
         /* stats */
         units: config.units,
         updateInterval: 2000,
+        decimal: 1,
         showCpuUsage: false,
         cpuUsageCommand: "top -b -n 1 | awk '/^%Cpu/{gsub(/,/, \".\", $8); print 100 - $8}'",
         showRamUsage: false,
@@ -24,6 +25,9 @@ Module.register("MMM-SystemInfo", {
         showCpuTemperature: false,
         cpuTemperatureCommand: "echo \"$(( ($(cat /sys/class/thermal/thermal_zone1/temp) + $(cat /sys/class/thermal/thermal_zone2/temp)) / 2 ))\"",
         showInternet: true,
+        showPrivateIp: true,
+        showVolume: false,
+        showVolumeCommand: "amixer get Master | grep 'Front Left:' | awk -F '[][]' '{ print $2 }' | tr -d '%'",
         connectedColor: "#008000",
         disconnectedColor: "#ff0000",
     },
@@ -74,9 +78,17 @@ Module.register("MMM-SystemInfo", {
                 func: this.cpuTemperature.bind(this)
             },
             {
+                condition: this.config.showVolume,
+                func: this.volume.bind(this)
+            },            
+            {
                 condition: this.config.showInternet,
                 func: this.internet.bind(this)
-            }  
+            },
+            {
+                condition: this.config.showPrivateIp,
+                func: this.privateIp.bind(this)
+            },    
         ];
           
         conditionsAndFunctions.forEach(({ condition, func }) => {
@@ -98,7 +110,7 @@ Module.register("MMM-SystemInfo", {
         
         icon.classList.add('fa-tachometer');
         key.innerHTML = this.translate("CPU_USAGE_PERCENT");
-        value.innerHTML = this.stats.cpuUsage.toFixed(1) + '%';
+        value.innerHTML = this.stats.cpuUsage.toFixed(this.config.decimal) + '%';
 
         td1.appendChild(icon);
         td1.appendChild(key);
@@ -119,7 +131,7 @@ Module.register("MMM-SystemInfo", {
                 
         icon.classList.add('fa-microchip');
         key.innerHTML = this.translate("RAM_USAGE_PERCENT");
-        value.innerHTML = this.stats.ramUsage.toFixed(1) + '%';
+        value.innerHTML = this.stats.ramUsage.toFixed(this.config.decimal) + '%';
 
         td1.appendChild(icon);
         td1.appendChild(key);
@@ -140,8 +152,7 @@ Module.register("MMM-SystemInfo", {
         
         icon.classList.add('fa-hard-drive');
         key.innerHTML = this.translate("DISK_USAGE_PERCENT");
-        console.log(this.stats);
-        value.innerHTML = parseFloat(this.stats.diskUsage).toFixed(1) + '%';
+        value.innerHTML = parseFloat(this.stats.diskUsage).toFixed(this.config.decimal) + '%';
 
         td1.appendChild(icon);
         td1.appendChild(key);
@@ -196,7 +207,67 @@ Module.register("MMM-SystemInfo", {
         tr.appendChild(td2);
         
         return tr;           
-    },            
+    },   
+
+    privateIp: function () {
+        const tr = this.html.tr();
+        const td1 = this.html.td();
+        const td2 = this.html.td();
+        const icon = this.html.icon();
+        const key = this.html.key();
+        const value = this.html.icon();
+        tr.classList.add('private_ip');
+        
+        icon.classList.add('fa-network-wired');
+        key.innerHTML = this.stats.ip;
+        value.className += this.stats.ip == null ? ' bold offline fa-times' : ' bold online fa-check';
+        
+        td1.appendChild(icon);
+        td1.appendChild(key);
+        tr.appendChild(td1);
+
+        td2.classList.add('align-center');
+        td2.appendChild(value);
+        tr.appendChild(td2);
+        
+        return tr;             
+    }, 
+    volume: function () {
+        const tr = this.html.tr();
+        const td1 = this.html.td();
+        const td2 = this.html.td();
+        const icon = this.html.icon();
+        const key = this.html.key();
+        const value = this.html.value();
+        
+        icon.classList.add(this._volumeStatus(this.stats.volume));
+        key.innerHTML = this.translate("VOLUME");
+        value.innerHTML = this.stats.volume + '%';
+
+        td1.appendChild(icon);
+        td1.appendChild(key);
+        tr.appendChild(td1);
+
+        td2.classList.add('align-center');
+        td2.appendChild(value);
+        tr.appendChild(td2);
+        
+        return tr;             
+    },
+
+    _volumeStatus(number) {
+        let volumeStatus;
+    
+        if (number >= 0 && number <= 10) {
+            volumeStatus = "fa-volume-off";
+        } else if (number >= 80 && number <= 100) {
+            volumeStatus = "fa-volume-up";
+        } else {
+            volumeStatus = "fa-volume-down";
+        }
+    
+        return volumeStatus;
+    },           
 
     createWifiDiv: function() {
         const wrapper = document.createElement("div");
@@ -253,7 +324,9 @@ Module.register("MMM-SystemInfo", {
             cpuUsage: 0,
             ramUsage: 0,
             diskUsage: 0,
-            cpuTemperature: this.config.units == "imperial" ? '0°F' : '0°C' 
+            cpuTemperature: this.config.units == "imperial" ? '0°F' : '0°C',
+            ip: null,
+            volume: 0
         }
 
         this.html = {

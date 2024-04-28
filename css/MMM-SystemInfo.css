@@ -59,7 +59,7 @@
 
 .SI-system-info .fa {
     display: inline-block;
-    width: 1em;
+    width: 20px;
     text-align: center;
     margin-right: 5px;
     color: var(--color-text-bright);
@@ -74,19 +74,27 @@
     text-align: right;
 }
 
-.SI-system-info .internet .value {
+.SI-system-info .internet .value,
+.SI-system-info .private_ip .value {
     text-align: center;
     display: block;
 }
 
-.SI-system-info .internet .online {
+.SI-system-info .internet .align-center .fa,
+.SI-system-info .private_ip .align-center .fa {
+    display: block;
+    margin: 0;
+    width: 100%;
+}
+
+.SI-system-info .online {
     color: var(--internet-on);
     -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: var(--internet-on);
     -webkit-text-fill-color: var(--internet-on);    
 }
 
-.SI-system-info .internet .offline {
+.SI-system-info .offline {
     color: var(--internet-off);
     -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: var(--internet-off);

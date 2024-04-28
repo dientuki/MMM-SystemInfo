@@ -6,5 +6,6 @@
     "INTERNET": "Internet",
     "NETWORK": "Red",
     "PASSWORD": "Clave",
-    "AUTHENTICATION": "Autenticacion"
+    "AUTHENTICATION": "Autenticacion",
+    "VOLUME": "Volumen"
   }

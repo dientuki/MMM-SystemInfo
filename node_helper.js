@@ -1,6 +1,8 @@
 const NodeHelper = require("node_helper");
 const {execSync} = require('child_process');
 const Log = require("logger");
+const os = require('os');
+const loudness = require('loudness');
 
 module.exports = NodeHelper.create({
     start: function () {
@@ -20,7 +22,9 @@ module.exports = NodeHelper.create({
             cpuUsage: this.getCpuUsage(),
             ramUsage: this.getRamUsage(),
             diskUsage: this.getAvailableSpacePercentage(),
-            cpuTemperature: this.getCpuTemperature()
+            cpuTemperature: this.getCpuTemperature(),
+            ip: this.getPrivateIP(),
+            volume: this.getVolume()
         }
 
         this.stats = JSON.parse(JSON.stringify(this.stats));
@@ -45,7 +49,21 @@ module.exports = NodeHelper.create({
             const t = this.exec(this.config.cpuTemperatureCommand);
             return this.convertTemperature(t);
         }
-    },      
+    },    
+    getPrivateIP() {
+        const interfaces = os.networkInterfaces();
+        for (const iface in interfaces) {
+          for (const addr of interfaces[iface]) {
+            if (!addr.internal && addr.family === 'IPv4') {
+              return addr.address;
+            }
+          }
+        }
+        return null; // Return null if no private IP found
+    },
+    getVolume() {
+        return this.config.showVolume ? parseFloat(this.exec(this.config.showVolumeCommand)) : '';   
+    },
 
     exec: function(cmd){
         try {
