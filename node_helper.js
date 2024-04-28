@@ -2,7 +2,6 @@ const NodeHelper = require("node_helper");
 const {execSync} = require('child_process');
 const Log = require("logger");
 const os = require('os');
-const loudness = require('loudness');
 
 module.exports = NodeHelper.create({
     start: function () {
