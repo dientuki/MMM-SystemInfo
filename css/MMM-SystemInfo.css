@@ -17,6 +17,10 @@
     text-align: center;
 }
 
+.layout-rtl .SI-wifi {
+    order: 5;
+}
+
 .SI-qrimage {
     background: #000;
     border: var(--qr-border) solid #fff;
@@ -75,13 +79,13 @@
 }
 
 .SI-system-info .internet .value,
-.SI-system-info .private_ip .value {
+.SI-system-info .privateIp .value {
     text-align: center;
     display: block;
 }
 
 .SI-system-info .internet .align-center .fa,
-.SI-system-info .private_ip .align-center .fa {
+.SI-system-info .privateIp .align-center .fa {
     display: block;
     margin: 0;
     width: 100%;

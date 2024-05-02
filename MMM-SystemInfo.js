@@ -1,3 +1,5 @@
+"use strict";
+
 Module.register("MMM-SystemInfo", {
     // Default module config.
     defaults: {
@@ -30,6 +32,11 @@ Module.register("MMM-SystemInfo", {
         showVolumeCommand: "amixer get Master | grep 'Front Left:' | awk -F '[][]' '{ print $2 }' | tr -d '%'",
         connectedColor: "#008000",
         disconnectedColor: "#ff0000",
+        /* design */
+        //ltr: qr box | stats
+        //rtl: stats | qr box
+        layout: "ltr"
+
     },
 
     getTranslations() {
@@ -41,53 +48,55 @@ Module.register("MMM-SystemInfo", {
 
     // Override dom generator.
     getDom: function () {
-        const wrapper = document.createElement("div");
+        this.root = document.createElement("div");
         const wifiDiv = this.createWifiDiv();
         const systemDiv = this.createSystemDiv();
-        const cssClass = [
+        this.root.classList.add(
             'SI-container',
-            this.config.tableClass
-        ]
+            this.config.tableClass,
+            'layout-' + this.config.layout
+        );
 
-        wrapper.className = cssClass.join(' ');
-        wrapper.appendChild(systemDiv);
-        wrapper.appendChild(wifiDiv);
+        wifiDiv.classList.add('SI-wifi');
+        systemDiv.classList.add('SI-system-info');
 
-        return wrapper;
+        this.root.appendChild(wifiDiv);
+        this.root.appendChild(systemDiv);
+
+        return this.root;
     },  
 
     createSystemDiv: function () {
         const table = document.createElement("table");
-        table.className = 'SI-system-info';
 
         const conditionsAndFunctions = [
             {
                 condition: this.config.showCpuUsage,
-                func: this.cpuUsage.bind(this)
+                func: this.showCpuUsage.bind(this)
             },
             {
                 condition: this.config.showRamUsage,
-                func: this.ramUsage.bind(this)
+                func: this.showRamUsage.bind(this)
             },
             {
                 condition: this.config.showDiskUsage,
-                func: this.diskUsage.bind(this)
+                func: this.showDiskUsage.bind(this)
             },
             {
                 condition: this.config.showCpuTemperature,
-                func: this.cpuTemperature.bind(this)
+                func: this.showCpuTemperature.bind(this)
             },
             {
                 condition: this.config.showVolume,
-                func: this.volume.bind(this)
+                func: this.showVolume.bind(this)
             },            
             {
                 condition: this.config.showInternet,
-                func: this.internet.bind(this)
+                func: this.showInternet.bind(this)
             },
             {
                 condition: this.config.showPrivateIp,
-                func: this.privateIp.bind(this)
+                func: this.showPrivateIp.bind(this)
             },    
         ];
           
@@ -100,7 +109,7 @@ Module.register("MMM-SystemInfo", {
         return table;
     },
 
-    cpuUsage: function () {
+    showCpuUsage: function () {
         const tr = this.html.tr();
         const td1 = this.html.td();
         const td2 = this.html.td();
@@ -108,9 +117,9 @@ Module.register("MMM-SystemInfo", {
         const key = this.html.key();
         const value = this.html.value();
         
+        tr.classList.add('cpuUsage');
         icon.classList.add('fa-tachometer');
         key.innerHTML = this.translate("CPU_USAGE_PERCENT");
-        value.innerHTML = this.stats.cpuUsage.toFixed(this.config.decimal) + '%';
 
         td1.appendChild(icon);
         td1.appendChild(key);
@@ -121,7 +130,7 @@ Module.register("MMM-SystemInfo", {
         
         return tr;
     },
-    ramUsage: function () {
+    showRamUsage: function () {
         const tr = this.html.tr();
         const td1 = this.html.td();
         const td2 = this.html.td();
@@ -129,9 +138,9 @@ Module.register("MMM-SystemInfo", {
         const key = this.html.key();
         const value = this.html.value();
                 
+        tr.classList.add('ramUsage');        
         icon.classList.add('fa-microchip');
         key.innerHTML = this.translate("RAM_USAGE_PERCENT");
-        value.innerHTML = this.stats.ramUsage.toFixed(this.config.decimal) + '%';
 
         td1.appendChild(icon);
         td1.appendChild(key);
@@ -142,7 +151,7 @@ Module.register("MMM-SystemInfo", {
         
         return tr;
     }, 
-    diskUsage: function () {
+    showDiskUsage: function () {
         const tr = this.html.tr();
         const td1 = this.html.td();
         const td2 = this.html.td();
@@ -150,9 +159,9 @@ Module.register("MMM-SystemInfo", {
         const key = this.html.key();
         const value = this.html.value();
         
+        tr.classList.add('diskUsage');
         icon.classList.add('fa-hard-drive');
         key.innerHTML = this.translate("DISK_USAGE_PERCENT");
-        value.innerHTML = parseFloat(this.stats.diskUsage).toFixed(this.config.decimal) + '%';
 
         td1.appendChild(icon);
         td1.appendChild(key);
@@ -163,7 +172,7 @@ Module.register("MMM-SystemInfo", {
         
         return tr;        
     },
-    cpuTemperature: function () {
+    showCpuTemperature: function () {
         const tr = this.html.tr();
         const td1 = this.html.td();
         const td2 = this.html.td();
@@ -171,9 +180,9 @@ Module.register("MMM-SystemInfo", {
         const key = this.html.key();
         const value = this.html.value();
         
+        tr.classList.add('cpuTemperature');
         icon.classList.add('fa-thermometer');
         key.innerHTML = this.translate("TEMPERATURE");
-        value.innerHTML = this.stats.cpuTemperature;
 
         td1.appendChild(icon);
         td1.appendChild(key);
@@ -185,18 +194,18 @@ Module.register("MMM-SystemInfo", {
         return tr;    
     }, 
 
-    internet: function () {
+    showInternet: function () {
         const tr = this.html.tr();
         const td1 = this.html.td();
         const td2 = this.html.td();
         const icon = this.html.icon();
         const key = this.html.key();
         const value = this.html.icon();
-        tr.classList.add('internet');
         
+        tr.classList.add('internet');
         icon.classList.add('fa-wifi');
         key.innerHTML = this.translate("INTERNET");
-        value.className += window.navigator.onLine ? ' bold online fa-check' : ' bold offline fa-times';
+        value.classList.add('status')
         
         td1.appendChild(icon);
         td1.appendChild(key);
@@ -209,18 +218,17 @@ Module.register("MMM-SystemInfo", {
         return tr;           
     },   
 
-    privateIp: function () {
+    showPrivateIp: function () {
         const tr = this.html.tr();
         const td1 = this.html.td();
         const td2 = this.html.td();
         const icon = this.html.icon();
         const key = this.html.key();
         const value = this.html.icon();
-        tr.classList.add('private_ip');
         
+        tr.classList.add('privateIp');
         icon.classList.add('fa-network-wired');
-        key.innerHTML = this.stats.ip;
-        value.className += this.stats.ip == null ? ' bold offline fa-times' : ' bold online fa-check';
+        value.classList.add('status')
         
         td1.appendChild(icon);
         td1.appendChild(key);
@@ -232,7 +240,7 @@ Module.register("MMM-SystemInfo", {
         
         return tr;             
     }, 
-    volume: function () {
+    showVolume: function () {
         const tr = this.html.tr();
         const td1 = this.html.td();
         const td2 = this.html.td();
@@ -240,9 +248,8 @@ Module.register("MMM-SystemInfo", {
         const key = this.html.key();
         const value = this.html.value();
         
-        icon.classList.add(this._volumeStatus(this.stats.volume));
+        tr.classList.add('volume');
         key.innerHTML = this.translate("VOLUME");
-        value.innerHTML = this.stats.volume + '%';
 
         td1.appendChild(icon);
         td1.appendChild(key);
@@ -255,7 +262,7 @@ Module.register("MMM-SystemInfo", {
         return tr;             
     },
 
-    _volumeStatus(number) {
+    volumeStatus(number) {
         let volumeStatus;
     
         if (number >= 0 && number <= 10) {
@@ -276,8 +283,9 @@ Module.register("MMM-SystemInfo", {
         const networkNameP = document.createElement("p");
         const networkPassP = document.createElement("p");
         const networkTypeP = document.createElement("p");
+        const qrCode = new QRCode(qrDiv, this.qrOptions);
 
-        wrapper.className = 'SI-wifi';
+        //wrapper.className = 'SI-wifi';
         
         qrDiv.id = "qrdiv";
         qrDiv.className = "SI-qrimage";
@@ -306,8 +314,6 @@ Module.register("MMM-SystemInfo", {
         if (this.config.showAuthType) {
             textDiv.appendChild(networkTypeP);
         }
-
-        qrCode = new QRCode(qrDiv, this.qrOptions);
         
         wrapper.appendChild(textDiv);
         return wrapper;
@@ -324,8 +330,8 @@ Module.register("MMM-SystemInfo", {
             cpuUsage: 0,
             ramUsage: 0,
             diskUsage: 0,
-            cpuTemperature: this.config.units == "imperial" ? '0°F' : '0°C',
-            ip: null,
+            cpuTemperature: 0,
+            privateIp: null,
             volume: 0
         }
 
@@ -390,10 +396,118 @@ Module.register("MMM-SystemInfo", {
         this.sendSocketNotification("CONFIG", this.config);
     },
 
+    smartUpdate: function(payload) {
+        const conditionsAndFunctions = [
+            {
+                condition: this.config.showCpuUsage,
+                func: this.updateCpuUsage.bind(this)
+            },
+            {
+                condition: this.config.showRamUsage,
+                func: this.updateRamUsage.bind(this)
+            },
+            {
+                condition: this.config.showDiskUsage,
+                func: this.updateDiskUsage.bind(this)
+            },
+            {
+                condition: this.config.showCpuTemperature,
+                func: this.updateCpuTemperature.bind(this)
+            },
+            {
+                condition: this.config.showVolume,
+                func: this.updateVolume.bind(this)
+            },            
+            {
+                condition: this.config.showInternet,
+                func: this.updateInternet.bind(this)
+            },
+            {
+                condition: this.config.showPrivateIp,
+                func: this.updatePrivateIp.bind(this)
+            },    
+        ];
+          
+        conditionsAndFunctions.forEach(({ condition, func }) => {
+            if (condition) {
+                func(payload);
+            }
+        });
+    },
+
+    updateCpuUsage: function(payload) {
+        if (payload.cpuUsage != this.stats.cpuUsage) {
+            const value =  this.root.querySelector('.cpuUsage .value');
+            if (value != undefined) {
+                value.innerHTML = payload.cpuUsage.toFixed(this.config.decimal) + '%';
+            }
+        }
+    },
+
+    updateRamUsage: function(payload) {
+        if (payload.ramUsage != this.stats.ramUsage ) {
+            const value =  this.root.querySelector('.ramUsage .value');
+            if (value != undefined) {
+                value.innerHTML = payload.ramUsage.toFixed(this.config.decimal) + '%';
+            }
+        }
+    },    
+
+    updateDiskUsage: function(payload) {
+        if (payload.diskUsage != this.stats.diskUsage) {
+            const value =  this.root.querySelector('.diskUsage .value');
+            if (value != undefined) {
+                value.innerHTML = parseFloat(payload.diskUsage).toFixed(this.config.decimal) + '%';
+            }
+        }
+    },     
+
+    updateCpuTemperature: function(payload) {
+        if (payload.cpuTemperature != this.stats.cpuTemperature ) {
+            const value =  this.root.querySelector('.cpuTemperature .value');
+            if (value != undefined) {
+                value.innerHTML = this.config.units == "imperial" ? payload.cpuTemperature +'°F' : payload.cpuTemperature + '°C' ;
+            }
+        }
+    },     
+    
+    updateInternet: function(payload) {
+        const value =  this.root.querySelector('.internet .status');
+        if (value != undefined) {
+            value.className = `fa status bold ${window.navigator.onLine ? ' online fa-check' : ' offline fa-times'}`;
+        }
+    },     
+
+    updatePrivateIp: function(payload) {
+        if (payload.privateIp != this.stats.privateIp ) {
+            const wrapper =  this.root.querySelector('.privateIp');
+            if (wrapper != undefined) {
+                wrapper.querySelector('.key').innerHTML = payload.privateIp;
+                wrapper.querySelector('.status').className = `fa status bold ${payload.privateIp == null ? 'offline fa-times' : 'online fa-check'}`;
+            }
+        }
+    },
+
+    updateVolume: function(payload) {
+        if (payload.volume != this.stats.volume ) {
+            const wrapper =  this.root.querySelector('.volume');
+            if (wrapper != undefined) {
+                wrapper.querySelector('.fa').className = 'fa ' + this.volumeStatus(payload.volume);
+                wrapper.querySelector('.value').innerHTML = payload.volume + '%';
+            }
+        }
+    },
+
     socketNotificationReceived: function(notification, payload) {
         if (notification === "STATS") {
+            //this.stats = payload;
+            //this.updateDom();
+            //console.log(payload)
+            this.smartUpdate(payload);
             this.stats = payload;
-            this.updateDom();
+            //this.updateDom()
+            this.root.classList.add('test');
+            
         }
     },    
 

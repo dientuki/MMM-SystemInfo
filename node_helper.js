@@ -22,7 +22,7 @@ module.exports = NodeHelper.create({
             ramUsage: this.getRamUsage(),
             diskUsage: this.getAvailableSpacePercentage(),
             cpuTemperature: this.getCpuTemperature(),
-            ip: this.getPrivateIP(),
+            privateIp: this.getPrivateIP(),
             volume: this.getVolume()
         }
 
@@ -50,15 +50,17 @@ module.exports = NodeHelper.create({
         }
     },    
     getPrivateIP() {
-        const interfaces = os.networkInterfaces();
-        for (const iface in interfaces) {
-          for (const addr of interfaces[iface]) {
-            if (!addr.internal && addr.family === 'IPv4') {
-              return addr.address;
+        if (this.config.showPrivateIp) { 
+            const interfaces = os.networkInterfaces();
+            for (const iface in interfaces) {
+            for (const addr of interfaces[iface]) {
+                if (!addr.internal && addr.family === 'IPv4') {
+                return addr.address;
+                }
             }
-          }
+            }
+            return null; // Return null if no private IP found
         }
-        return null; // Return null if no private IP found
     },
     getVolume() {
         return this.config.showVolume ? parseFloat(this.exec(this.config.showVolumeCommand)) : '';   
