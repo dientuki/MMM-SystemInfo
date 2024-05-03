@@ -3,8 +3,10 @@ Magic Mirror Module that displays a lot of useful info as:
 - CPU load
 - RAM usage
 - Disk usage
-- CPU temperaturw
+- CPU temperature
+- Volume
 - Internet status
+- Private ip
 - Wifi network to share
 
 Note that if you have special characters in your password, the QR code will not work.  This is because I haven't done the work required to escape the special characters properly.
@@ -22,7 +24,7 @@ Full example
 
 `cd ~/MagicMirror/modules`
 
-2. Clone this repository `git clone git@github.com:` OR `git clone https://github.com/`
+2. Clone this repository `git clone https://github.com/dientuki/MMM-SystemInfo.git`
 
 3. Make changes to your `config.js` file.  
   
@@ -42,6 +44,8 @@ modules:[
 
 ## Configuration Options 
 
+### Wifi
+
 | Option | Description | Default |
 | ------------- | ------------- | ------------- |
 | `qrSize`  | The width and height of QRCode in pixels. <br>**Type:** `int` | 125 |
@@ -53,12 +57,30 @@ modules:[
 | `showNetwork`  | Show network SSID.<br>**Type:** `boolean` | true |
 | `showPassword`  | Show your network password.<br>**Type:** `boolean` | true |
 | `showAuthType`  | Show your authentication type.<br>**Type:** `boolean` | true |
-| `units`  | Use either 'metric' or 'imperial' to display the temperature.<br>**Options:** `metric` `imperial` | Inherit from config.js |
-| `updateInterval`  | How often does the content needs to be fetched? (Milliseconds) <br>**Type:** `int` | 200 |
+
+### Stats
+
+There are several ways to get the stats, it may vary according to your SO or custom instalattion... so, here is the catch. Just add the command thats works for you buddy.
+I put as example the commands that im using on my ubunut linux on my old pc, but check every command in your enviroment.
+Addionally, you can set showSTAT to false and omit the stat to show, it is usefull is any value is wrong and you want to avoid dealing with that stat
+
+| Option | Description | Default |
+| ------------- | ------------- | ------------- |
 | `showCpuUsage`  | Show your CPU usage.<br>**Type:** `boolean` | true |
 | `cpuUsageCommand`  | Command to get the cpu usage.<br>**Example:**`awk '/^%Cpu/{gsub(/,/, ".", $8); print 100 - $8}' <(top -b -n 1)`<br>**Type:** `string` | |
 
-## Stats
 
-There are several ways to get the stats, it may vary according to your SO or custom instalattion... so, here is the catch. Just add the command thats works for you buddy.
-I put as example the commands that im using on my arch linux on my old pc, but check every command in your enviroment.
+
+### Design
+
+| Option | Description | Default |
+| ------------- | ------------- | ------------- |
+| `layout`  | The order of the QR and table, usefull is you want to use it at right or left corners <br> `ltr`: QR box \| Stats <br> `rtl`: Stats \| QR box <br />**Options:** `ltr` `rtl` | ltr |
+| `connectedColor`  | Color to use as ok status. <br>**Type:** `string` | #008000 |
+| `disconnectedColor`  | Color to use as fail status. <br>**Type:** `string` | #ff0000 |
+| `wifiDataCompact`  | How to display your netkwork info, full (several lines) or compact (one line, just the data).<br>**Type:** `boolean` | false |
+| `units`  | Use either 'metric' or 'imperial' to display the temperature.<br>**Options:** `metric` `imperial` | Inherit from config.js |
+| `updateInterval`  | How often does the content needs to be fetched? (Milliseconds) <br>**Type:** `int` | 2000 |
+| `decimal`  | How much decimal numbers want to show <br>**Type:** `int` | 1 |
+
+

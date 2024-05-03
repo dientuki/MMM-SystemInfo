@@ -13,11 +13,7 @@ Module.register("MMM-SystemInfo", {
         showNetwork: true,
         showPassword: true,
         showAuthType: true,
-        wifiDataCompact: false,
         /* stats */
-        units: config.units,
-        updateInterval: 2000,
-        decimal: 1,
         showCpuUsage: false,
         cpuUsageCommand: "top -b -n 1 | awk '/^%Cpu/{gsub(/,/, \".\", $8); print 100 - $8}'",
         showRamUsage: false,
@@ -30,13 +26,16 @@ Module.register("MMM-SystemInfo", {
         showPrivateIp: true,
         showVolume: false,
         showVolumeCommand: "amixer get Master | grep 'Front Left:' | awk -F '[][]' '{ print $2 }' | tr -d '%'",
-        connectedColor: "#008000",
-        disconnectedColor: "#ff0000",
         /* design */
         //ltr: qr box | stats
         //rtl: stats | qr box
-        layout: "ltr"
-
+        layout: "ltr",
+        connectedColor: "#008000",
+        disconnectedColor: "#ff0000",  
+        wifiDataCompact: false,      
+        units: config.units,
+        updateInterval: 2000,
+        decimal: 1,
     },
 
     getTranslations() {
