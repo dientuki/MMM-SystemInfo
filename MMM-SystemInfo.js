@@ -283,9 +283,7 @@ Module.register("MMM-SystemInfo", {
         const networkNameP = document.createElement("p");
         const networkPassP = document.createElement("p");
         const networkTypeP = document.createElement("p");
-        const qrCode = new QRCode(qrDiv, this.qrOptions);
-
-        //wrapper.className = 'SI-wifi';
+        new qrCode(qrDiv, this.qrOptions);
         
         qrDiv.id = "qrdiv";
         qrDiv.className = "SI-qrimage";
@@ -390,7 +388,7 @@ Module.register("MMM-SystemInfo", {
             height: this.config.qrSize,
             colorDark: "#000",
             colorLight: "#FFF",
-            correctLevel: QRCode.CorrectLevel.H
+            correctLevel: qrCode.CorrectLevel.H
         };        
         
         this.sendSocketNotification("CONFIG", this.config);
@@ -500,14 +498,8 @@ Module.register("MMM-SystemInfo", {
 
     socketNotificationReceived: function(notification, payload) {
         if (notification === "STATS") {
-            //this.stats = payload;
-            //this.updateDom();
-            //console.log(payload)
             this.smartUpdate(payload);
             this.stats = payload;
-            //this.updateDom()
-            this.root.classList.add('test');
-            
         }
     },    
 
