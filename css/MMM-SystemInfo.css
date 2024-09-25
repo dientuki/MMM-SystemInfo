@@ -11,6 +11,7 @@
     align-items: flex-start;
     gap: 10px;
     text-align: left;
+    min-width: 300px;
 }
 
 .SI-container .align-center{
