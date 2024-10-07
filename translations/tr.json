@@ -1,0 +1,11 @@
+{
+    "CPU_USAGE_PERCENT": "İşlemci",
+    "RAM_USAGE_PERCENT": "Hafıza",
+    "DISK_USAGE_PERCENT": "Disk",
+    "TEMPERATURE": "Sıcaklık",
+    "INTERNET": "İnternet",
+    "NETWORK": "Ağ",
+    "PASSWORD": "Şifre",
+    "AUTHENTICATION": "Yetkilendirme",
+    "VOLUME": "Ses Düzeyi"
+  }

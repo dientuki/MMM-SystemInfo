@@ -5,6 +5,7 @@ Module.register("MMM-SystemInfo", {
     defaults: {
         tableClass: 'small',
         /* wifi */
+        showqr: true,
         qrSize: 125,
         network: 'network',
         password: 'pass',
@@ -19,9 +20,9 @@ Module.register("MMM-SystemInfo", {
         showRamUsage: false,
         ramUsageCommand: 'free | awk \'/Mem:/ { printf("%.1f\\n", (($3 + $5) / $2) * 100) }\'',
         showDiskUsage: false,
-        diskUsageCommand: "",
+        diskUsageCommand: "df --output=pcent / | tail -n 1 | tr -d '% '",
         showCpuTemperature: false,
-        cpuTemperatureCommand: "echo \"$(( ($(cat /sys/class/thermal/thermal_zone1/temp) + $(cat /sys/class/thermal/thermal_zone2/temp)) / 2 ))\"",
+        cpuTemperatureCommand: "cat /sys/class/thermal/thermal_zone0/temp",
         showInternet: true,
         showPrivateIp: true,
         showVolume: false,
@@ -41,25 +42,28 @@ Module.register("MMM-SystemInfo", {
     getTranslations() {
         return {
           en: "translations/en.json",
-          es: "translations/es.json"
+          es: "translations/es.json",
+          tr: "translations/tr.json"
         };
       },    
 
     // Override dom generator.
     getDom: function () {
         this.root = document.createElement("div");
-        const wifiDiv = this.createWifiDiv();
         const systemDiv = this.createSystemDiv();
         this.root.classList.add(
             'SI-container',
             this.config.tableClass,
             'layout-' + this.config.layout
         );
-
-        wifiDiv.classList.add('SI-wifi');
+        
+        if (this.config.showqr) {
+            const wifiDiv = this.createWifiDiv();
+            wifiDiv.classList.add('SI-wifi');
+            this.root.appendChild(wifiDiv);
+        }
+        
         systemDiv.classList.add('SI-system-info');
-
-        this.root.appendChild(wifiDiv);
         this.root.appendChild(systemDiv);
 
         return this.root;
@@ -210,7 +214,7 @@ Module.register("MMM-SystemInfo", {
         td1.appendChild(key);
         tr.appendChild(td1);
 
-        td2.classList.add('align-center');
+        td2.classList.add('align-right');
         td2.appendChild(value);
         tr.appendChild(td2);
         
@@ -233,7 +237,7 @@ Module.register("MMM-SystemInfo", {
         td1.appendChild(key);
         tr.appendChild(td1);
 
-        td2.classList.add('align-center');
+        td2.classList.add('align-right');
         td2.appendChild(value);
         tr.appendChild(td2);
         

@@ -84,7 +84,7 @@ module.exports = NodeHelper.create({
             break;
           case "metric":
           default:
-            convertedTemp = (temperature / 1000).toFixed(0);
+            convertedTemp = (temperature / 1000).toFixed(1);
         }
       
         return convertedTemp;
