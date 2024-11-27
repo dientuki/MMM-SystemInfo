@@ -266,17 +266,17 @@ Module.register("MMM-SystemInfo", {
     },
 
     volumeStatus(number) {
-        let volumeStatus;
+        let volume;
     
         if (number >= 0 && number <= 10) {
-            volumeStatus = "fa-volume-off";
+            volume = "fa-volume-off";
         } else if (number >= 80 && number <= 100) {
-            volumeStatus = "fa-volume-up";
+            volume = "fa-volume-up";
         } else {
-            volumeStatus = "fa-volume-down";
+            volume = "fa-volume-down";
         }
     
-        return volumeStatus;
+        return volume;
     },           
 
     createWifiDiv: function() {
@@ -333,7 +333,7 @@ Module.register("MMM-SystemInfo", {
             diskUsage: 0,
             cpuTemperature: 0,
             privateIp: null,
-            volume: 0
+            volume: -1
         }
 
         this.html = {
