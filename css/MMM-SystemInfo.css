@@ -11,7 +11,6 @@
     align-items: flex-start;
     gap: 10px;
     text-align: left;
-    min-width: 300px;
 }
 
 .SI-container .align-center{
@@ -77,6 +76,7 @@
 .SI-system-info .value{
     padding-left: 2px;
     text-align: right;
+    min-width: 35px;
 }
 
 .SI-system-info .internet .value,

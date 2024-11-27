@@ -214,7 +214,7 @@ Module.register("MMM-SystemInfo", {
         td1.appendChild(key);
         tr.appendChild(td1);
 
-        td2.classList.add('align-right');
+        td2.classList.add('align-center');
         td2.appendChild(value);
         tr.appendChild(td2);
         
@@ -237,7 +237,7 @@ Module.register("MMM-SystemInfo", {
         td1.appendChild(key);
         tr.appendChild(td1);
 
-        td2.classList.add('align-right');
+        td2.classList.add('align-center');
         td2.appendChild(value);
         tr.appendChild(td2);
         
