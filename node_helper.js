@@ -63,7 +63,7 @@ module.exports = NodeHelper.create({
         }
     },
     getVolume() {
-        return this.config.showVolume ? parseFloat(this.exec(this.config.showVolumeCommand)) : '';   
+        return this.config.showVolume ? parseFloat(this.exec(this.config.showVolumeCommand)) : '0';   
     },
 
     exec: function(cmd){
