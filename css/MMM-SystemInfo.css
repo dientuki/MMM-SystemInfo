@@ -76,6 +76,7 @@
 .SI-system-info .value{
     padding-left: 2px;
     text-align: right;
+    min-width: 35px;
 }
 
 .SI-system-info .internet .value,

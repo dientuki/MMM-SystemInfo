@@ -24,7 +24,7 @@ Full example
 
 `cd ~/MagicMirror/modules`
 
-2. Clone this repository `git clone https://github.com/dientuki/MMM-SystemInfo.git`
+2. Clone this repository `git clone https://github.com/erdemarslan/MMM-SystemInfo.git`
 
 3. Make changes to your `config.js` file.  
   

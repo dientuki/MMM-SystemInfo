@@ -80,11 +80,11 @@ module.exports = NodeHelper.create({
         
         switch(this.config.units) {
           case "imperial":
-            convertedTemp = ((temperature / 1000) * 1.8 + 32).toFixed(0);
+            convertedTemp = ((temperature / 1000) * 1.8 + 32).toFixed(this.config.decimal);
             break;
           case "metric":
           default:
-            convertedTemp = (temperature / 1000).toFixed(0);
+            convertedTemp = (temperature / 1000).toFixed(this.config.decimal);
         }
       
         return convertedTemp;
