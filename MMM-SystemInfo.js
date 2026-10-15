@@ -42,9 +42,10 @@ Module.register("MMM-SystemInfo", {
     getTranslations() {
         return {
           en: "translations/en.json",
+          fr: "translations/fr.json",
           es: "translations/es.json"
         };
-      },    
+      },
 
     // Override dom generator.
     getDom: function () {
