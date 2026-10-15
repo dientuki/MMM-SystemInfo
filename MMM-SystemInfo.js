@@ -41,9 +41,10 @@ Module.register("MMM-SystemInfo", {
     getTranslations() {
         return {
           en: "translations/en.json",
+          fr: "translations/fr.json",
           es: "translations/es.json"
         };
-      },    
+      },
 
     // Override dom generator.
     getDom: function () {
@@ -63,7 +64,7 @@ Module.register("MMM-SystemInfo", {
         this.root.appendChild(systemDiv);
 
         return this.root;
-    },  
+    },
 
     createSystemDiv: function () {
         const table = document.createElement("table");
@@ -88,7 +89,7 @@ Module.register("MMM-SystemInfo", {
             {
                 condition: this.config.showVolume,
                 func: this.showVolume.bind(this)
-            },            
+            },
             {
                 condition: this.config.showInternet,
                 func: this.showInternet.bind(this)
@@ -96,9 +97,9 @@ Module.register("MMM-SystemInfo", {
             {
                 condition: this.config.showPrivateIp,
                 func: this.showPrivateIp.bind(this)
-            },    
+            },
         ];
-          
+
         conditionsAndFunctions.forEach(({ condition, func }) => {
             if (condition) {
                 table.appendChild(func());
@@ -115,7 +116,7 @@ Module.register("MMM-SystemInfo", {
         const icon = this.html.icon();
         const key = this.html.key();
         const value = this.html.value();
-        
+
         tr.classList.add('cpuUsage');
         icon.classList.add('fa-tachometer');
         key.innerHTML = this.translate("CPU_USAGE_PERCENT");
@@ -126,7 +127,7 @@ Module.register("MMM-SystemInfo", {
 
         td2.appendChild(value);
         tr.appendChild(td2);
-        
+
         return tr;
     },
     showRamUsage: function () {
@@ -136,8 +137,8 @@ Module.register("MMM-SystemInfo", {
         const icon = this.html.icon();
         const key = this.html.key();
         const value = this.html.value();
-                
-        tr.classList.add('ramUsage');        
+
+        tr.classList.add('ramUsage');
         icon.classList.add('fa-microchip');
         key.innerHTML = this.translate("RAM_USAGE_PERCENT");
 
@@ -147,9 +148,9 @@ Module.register("MMM-SystemInfo", {
 
         td2.appendChild(value);
         tr.appendChild(td2);
-        
+
         return tr;
-    }, 
+    },
     showDiskUsage: function () {
         const tr = this.html.tr();
         const td1 = this.html.td();
@@ -157,7 +158,7 @@ Module.register("MMM-SystemInfo", {
         const icon = this.html.icon();
         const key = this.html.key();
         const value = this.html.value();
-        
+
         tr.classList.add('diskUsage');
         icon.classList.add('fa-hard-drive');
         key.innerHTML = this.translate("DISK_USAGE_PERCENT");
@@ -168,8 +169,8 @@ Module.register("MMM-SystemInfo", {
 
         td2.appendChild(value);
         tr.appendChild(td2);
-        
-        return tr;        
+
+        return tr;
     },
     showCpuTemperature: function () {
         const tr = this.html.tr();
@@ -178,7 +179,7 @@ Module.register("MMM-SystemInfo", {
         const icon = this.html.icon();
         const key = this.html.key();
         const value = this.html.value();
-        
+
         tr.classList.add('cpuTemperature');
         icon.classList.add('fa-thermometer');
         key.innerHTML = this.translate("TEMPERATURE");
@@ -189,9 +190,9 @@ Module.register("MMM-SystemInfo", {
 
         td2.appendChild(value);
         tr.appendChild(td2);
-        
-        return tr;    
-    }, 
+
+        return tr;
+    },
 
     showInternet: function () {
         const tr = this.html.tr();
@@ -200,12 +201,12 @@ Module.register("MMM-SystemInfo", {
         const icon = this.html.icon();
         const key = this.html.key();
         const value = this.html.icon();
-        
+
         tr.classList.add('internet');
         icon.classList.add('fa-wifi');
         key.innerHTML = this.translate("INTERNET");
         value.classList.add('status')
-        
+
         td1.appendChild(icon);
         td1.appendChild(key);
         tr.appendChild(td1);
@@ -213,9 +214,9 @@ Module.register("MMM-SystemInfo", {
         td2.classList.add('align-center');
         td2.appendChild(value);
         tr.appendChild(td2);
-        
-        return tr;           
-    },   
+
+        return tr;
+    },
 
     showPrivateIp: function () {
         const tr = this.html.tr();
@@ -224,11 +225,11 @@ Module.register("MMM-SystemInfo", {
         const icon = this.html.icon();
         const key = this.html.key();
         const value = this.html.icon();
-        
+
         tr.classList.add('privateIp');
         icon.classList.add('fa-network-wired');
         value.classList.add('status')
-        
+
         td1.appendChild(icon);
         td1.appendChild(key);
         tr.appendChild(td1);
@@ -236,9 +237,9 @@ Module.register("MMM-SystemInfo", {
         td2.classList.add('align-center');
         td2.appendChild(value);
         tr.appendChild(td2);
-        
-        return tr;             
-    }, 
+
+        return tr;
+    },
     showVolume: function () {
         const tr = this.html.tr();
         const td1 = this.html.td();
@@ -246,7 +247,7 @@ Module.register("MMM-SystemInfo", {
         const icon = this.html.icon();
         const key = this.html.key();
         const value = this.html.value();
-        
+
         tr.classList.add('volume');
         key.innerHTML = this.translate("VOLUME");
 
@@ -257,13 +258,13 @@ Module.register("MMM-SystemInfo", {
         td2.classList.add('align-center');
         td2.appendChild(value);
         tr.appendChild(td2);
-        
-        return tr;             
+
+        return tr;
     },
 
     volumeStatus(number) {
         let volume;
-    
+
         if (number >= 0 && number <= 10) {
             volume = "fa-volume-off";
         } else if (number >= 80 && number <= 100) {
@@ -271,9 +272,9 @@ Module.register("MMM-SystemInfo", {
         } else {
             volume = "fa-volume-down";
         }
-    
+
         return volume;
-    },           
+    },
 
     createWifiDiv: function() {
         const wrapper = document.createElement("div");
@@ -283,11 +284,11 @@ Module.register("MMM-SystemInfo", {
         const networkPassP = document.createElement("p");
         const networkTypeP = document.createElement("p");
         new qrCode(qrDiv, this.qrOptions);
-        
+
         qrDiv.id = "qrdiv";
         qrDiv.className = "SI-qrimage";
-        
-        wrapper.appendChild(qrDiv);   
+
+        wrapper.appendChild(qrDiv);
 
         textDiv.classList.add(
             'bright', //MM default class
@@ -311,7 +312,7 @@ Module.register("MMM-SystemInfo", {
         if (this.config.showAuthType) {
             textDiv.appendChild(networkTypeP);
         }
-        
+
         wrapper.appendChild(textDiv);
         return wrapper;
     },
@@ -337,12 +338,12 @@ Module.register("MMM-SystemInfo", {
                 const tr = document.createElement("tr");
                 tr.className = 'tr';
                 return tr;
-            },            
+            },
             td: function() {
                 const td = document.createElement("td");
                 td.className = 'td';
                 return td;
-            },                        
+            },
             icon: function() {
                 const i = document.createElement("i");
                 i.className = 'fa';
@@ -359,7 +360,7 @@ Module.register("MMM-SystemInfo", {
                 return span;
             },
         }
-	  
+
         switch(this.config.authType.toUpperCase()) {
           case "WPA":
           case "WEP":
@@ -372,14 +373,14 @@ Module.register("MMM-SystemInfo", {
               auth = "nopass";
               break;
         }
-        
+
         //TODO: Allow for special characters
         this.qrText = "WIFI:" +
         "T:"  + auth +
         ";S:" + this.config.network +
         ";P:" + this.config.password +
         ";H:" + this.config.hiddenId +
-        ";";   
+        ";";
 
         this.qrOptions = {
             text: this.qrText,
@@ -388,8 +389,8 @@ Module.register("MMM-SystemInfo", {
             colorDark: "#000",
             colorLight: "#FFF",
             correctLevel: qrCode.CorrectLevel.H
-        };        
-        
+        };
+
         this.sendSocketNotification("CONFIG", this.config);
     },
 
@@ -414,7 +415,7 @@ Module.register("MMM-SystemInfo", {
             {
                 condition: this.config.showVolume,
                 func: this.updateVolume.bind(this)
-            },            
+            },
             {
                 condition: this.config.showInternet,
                 func: this.updateInternet.bind(this)
@@ -422,9 +423,9 @@ Module.register("MMM-SystemInfo", {
             {
                 condition: this.config.showPrivateIp,
                 func: this.updatePrivateIp.bind(this)
-            },    
+            },
         ];
-          
+
         conditionsAndFunctions.forEach(({ condition, func }) => {
             if (condition) {
                 func(payload);
@@ -448,7 +449,7 @@ Module.register("MMM-SystemInfo", {
                 value.innerHTML = payload.ramUsage.toFixed(this.config.decimal) + '%';
             }
         }
-    },    
+    },
 
     updateDiskUsage: function(payload) {
         if (payload.diskUsage != this.stats.diskUsage) {
@@ -457,7 +458,7 @@ Module.register("MMM-SystemInfo", {
                 value.innerHTML = parseFloat(payload.diskUsage).toFixed(this.config.decimal) + '%';
             }
         }
-    },     
+    },
 
     updateCpuTemperature: function(payload) {
         if (payload.cpuTemperature != this.stats.cpuTemperature ) {
@@ -466,14 +467,14 @@ Module.register("MMM-SystemInfo", {
                 value.innerHTML = this.config.units == "imperial" ? payload.cpuTemperature +'°F' : payload.cpuTemperature + '°C' ;
             }
         }
-    },     
-    
+    },
+
     updateInternet: function(payload) {
         const value =  this.root.querySelector('.internet .status');
         if (value != undefined) {
             value.className = `fa status bold ${window.navigator.onLine ? ' online fa-check' : ' offline fa-times'}`;
         }
-    },     
+    },
 
     updatePrivateIp: function(payload) {
         if (payload.privateIp != this.stats.privateIp ) {
@@ -500,17 +501,17 @@ Module.register("MMM-SystemInfo", {
             this.smartUpdate(payload);
             this.stats = payload;
         }
-    },    
+    },
 
     getScripts: function() {
         return [
           this.file('utils/qrcode.min.js'), // library that creates qrcode. Thanks to https://github.com/davidshimjs/qrcodejs
         ];
-    },    
+    },
 
     getStyles: function() {
         return [
             this.file('css/MMM-SystemInfo.css'), // this file will be loaded straight from the module folder.
         ]
-    },    
+    },
 });
