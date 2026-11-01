@@ -68,7 +68,10 @@ module.exports = NodeHelper.create({
 
     exec: function(cmd){
         try {
-            const result = execSync(cmd);
+            // Without stdio "pipe", execSync forwards the command's stderr to
+            // process.stderr. Under Electron on a Raspberry Pi that write
+            // fails with EFAULT, an uncaught exception every update.
+            const result = execSync(cmd, { stdio: "pipe" });
             return result.toString();
         } catch (error) {
             Log.error(`${this.name} - Error getting data. Command: ${cmd}`)
